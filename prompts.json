@@ -12,7 +12,7 @@
         "title": "角色原创模板",
         "category": "人设多视图",
         "category2": "Nanobanana",
-        "desc": "从零开始设计新角色，基于文字描述生成专业角色参考表",
+        "desc": "【内容可替换或删除】从零开始设计新角色，基于文字描述生成专业角色参考表",
         "content": "Create a professional character reference sheet of [a futuristic tech explorer, female, wearing a matte white carbon fiber exosuit, short neon blue bob haircut, glowing orange tactical goggles]. Use a clean, neutral plain background and present the sheet as a technical model turnaround in a photographic style. Arrange the composition into two horizontal rows. Top row: four full-body standing views: front view, left profile view, right profile view, back view. Bottom row: three highly detailed close-up portraits: front portrait, left profile portrait, right profile portrait. Maintain perfect identity consistency, accurate anatomy, and consistent facial scale. Lighting should be natural and controlled. Output a crisp, print-ready reference sheet."
     },
     {
@@ -44,7 +44,7 @@
         "title": "即梦人物三视图",
         "category": "人设多视图",
         "category2": "即梦",
-        "desc": "一体化角色参考表，左侧正面半身特写，右侧正侧背三视图",
-        "content": "【无人物参考图请在此添加详细人物描述，有则删除】\n\n优秀人设设计师，专业标准人设出图。生成一张完整的一体化角色参考表（Character Reference Sheet）。必须将以下四个视角整合在同一个画面内，清晰有序地排列：左侧是一个精致的正面半身特写；右侧是完全展示的、从头到脚的人物全身正、侧、背三视图。强制要求：右侧三视图中的全身像必须保持头部和脚部完全在画面内，严禁裁剪，确保角色双脚着地完整呈现，从头顶到脚底清晰可见。所有视角保持完美的身份一致性。背景纯白（Pure white background），无阴影。人物比例修长，九头身，头小。\n\n【角色描述：一位清冷孤傲的仙侠女剑客，身穿白蓝相间的流光云纹长裙，轻盈的丝绸飘带随风舞动，长发飘逸，佩戴精致的白玉头饰，神情淡漠。】"
+        "desc": "【内容可替换或删除】一体化角色参考表，左侧正面半身特写，右侧正侧背三视图",
+        "content": "优秀人设设计师，专业标准人设出图。生成一张完整的一体化角色参考表（Character Reference Sheet）。必须将以下四个视角整合在同一个画面内，清晰有序地排列：左侧是一个精致的正面半身特写；右侧是完全展示的、从头到脚的人物全身正、侧、背三视图。强制要求：右侧三视图中的全身像必须保持头部和脚部完全在画面内，严禁裁剪，确保角色双脚着地完整呈现，从头顶到脚底清晰可见。所有视角保持完美的身份一致性。背景纯白（Pure white background），无阴影。人物比例修长，九头身，头小。【角色描述：一位清冷孤傲的仙侠女剑客，身穿白蓝相间的流光云纹长裙，轻盈的丝绸飘带随风舞动，长发飘逸，佩戴精致的白玉头饰，神情淡漠。】"
     }
 ]
