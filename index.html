@@ -330,6 +330,7 @@
             <button class="category-btn" data-category="人设">人设模板</button>
             <button class="category-btn" data-category="角色">角色设计</button>
             <button class="category-btn" data-category="换装">换装迭代</button>
+            <button class="category-btn" data-category="镜头">镜头拍摄</button>
         </div>
 
         <div class="prompts-grid" id="promptsGrid">
@@ -370,6 +371,24 @@
                 desc: "保持角色特征不变，仅更换服装造型，适用于角色多造型展示",
                 label: "英文提示词 (Prompt)",
                 content: "Keep the same character sheet layout. Keep the physical characteristics, facial features, and expression exactly the same as the previous reference. Change the outfit to [a traditional crimson Hanfu with intricate gold phoenix embroidery and flowing silk sleeves]. Ensure the new clothing maintains the same technical turnaround perspective and lighting consistency across all panels."
+            },
+            {
+                id: 4,
+                title: "2x2 镜头组生成提示词",
+                category: "镜头",
+                category2: "拍摄",
+                desc: "用于在一张图中同时生成四个连续动作或不同角度的镜头，成功率高达95%",
+                label: "英文提示词 (Prompt)",
+                content: "Generate a photorealistic cinematic 2x2 grid of still frames from a live-action [Insert Film/Series Title], depicting [Insert Scene Description].\n\nThe imagery must feel grounded, brutal, and physically real. No animation style, no painterly rendering, no exaggerated fantasy glow. Real weight, real violence, real consequences.\n\nRemember to use @char1 as a reference for what [Character Name] looks like and @img1 for what the [Environment/Creature] looks like.\n\nEach frame represents a different angle or distance from the same sequence of action, capturing fragments of the moment where [Describe Action Sequence, e.g., Character jumps, strikes, and lands].\n\n⸻\nSCENE & ENVIRONMENT: (Add details here)\n⸻\nCHARACTERS: (Add details here)\n⸻\nACTION & CONTINUITY: (Add details here)\n⸻\nCAMERA & COMPOSITION: (Add details here)\n⸻\nLIGHTING & ATMOSPHERE: (Add details here)\n⸻\nTONE & FINISH: (Add details here)"
+            },
+            {
+                id: 5,
+                title: "电影级画质增强提示词",
+                category: "镜头",
+                category2: "拍摄",
+                desc: "从2x2网格裁切出单张图片后，使用高端放大工具进行高精细化增强",
+                label: "英文提示词 (Upscaling Prompt)",
+                content: "Preserve the exact composition, framing, camera angle, color grade and subject placement — do not alter or add new elements.\n\nIncrease resolution to true high-end cinematic clarity, with natural film-grade sharpness (no AI oversharpening).\n\nApply blockbuster–style cinematography:\n– Grounded realism\n– Soft, motivated lighting\n– Natural contrast\n– Restrained highlights\n– Deep but clean shadows\n– Subtle atmospheric depth\n– Keep the same color temperature and color tone\n\nTexture pass should feel physically real: skin pores, fabric weave, dust, stone, metal, wood — all enhanced without plastic smoothing.\n\nMaintain cinematic depth of field consistent with the original image (natural lens falloff, no artificial blur).\n\nDo not redraw. Do not stylize. Do not beautify. Only enhance realism and resolution."
             }
         ];
 
