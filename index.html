@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提示词库 | Prompt Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --card-hover: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #22c55e;
+            --accent: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* 背景效果 */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 头部 */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* 搜索栏 */
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            padding-left: 3rem;
+            font-size: 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        /* 分类标签 */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .category-btn {
+            padding: 0.5rem 1.25rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* 提示词卡片 */
+        .prompts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .prompt-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .prompt-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .prompt-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .prompt-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .prompt-tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            border-radius: 12px;
+        }
+
+        .prompt-body {
+            padding: 1.25rem;
+        }
+
+        .prompt-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .prompt-label {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .prompt-content {
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .prompt-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .prompt-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .prompt-content::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .prompt-actions {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .copy-btn {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+        }
+
+        /* 复制提示 */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--success);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* 统计 */
+        .stats {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state span {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .prompts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <header>
+            <h1>💡 提示词库</h1>
+            <p class="subtitle">AI 提示词 | 分类储存 | 一键复制</p>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索提示词...">
+        </div>
+
+        <div class="categories">
+            <button class="category-btn active" data-category="all">全部</button>
+            <button class="category-btn" data-category="人设">人设模板</button>
+            <button class="category-btn" data-category="角色">角色设计</button>
+            <button class="category-btn" data-category="换装">换装迭代</button>
+        </div>
+
+        <div class="prompts-grid" id="promptsGrid">
+            <!-- 提示词卡片将通过 JS 渲染 -->
+        </div>
+
+        <div class="stats" id="stats"></div>
+    </div>
+
+    <div class="toast" id="toast">✅ 已复制到剪贴板！</div>
+
+    <script>
+        // 提示词数据
+        const prompts = [
+            {
+                id: 1,
+                title: "角色克隆模板",
+                category: "人设",
+                category2: "角色",
+                desc: "基于参考图创建专业角色参考表，适用于已有角色图的定妆照或3D建模参考",
+                label: "英文提示词 (Prompt)",
+                content: "Create a professional character reference sheet based strictly on the uploaded reference image. Use a clean, neutral plain background and present the sheet as a technical model turnaround while matching the exact visual style of the reference. Arrange the composition into two horizontal rows. Top row: four full-body standing views placed side-by-side: front view, left profile view, right profile view, back view. Bottom row: three highly detailed close-up portraits: front portrait, left profile portrait, right profile portrait. Maintain perfect identity consistency, relaxed A-pose, and consistent head height. Output a crisp, print-ready reference sheet with sharp details."
+            },
+            {
+                id: 2,
+                title: "角色原创模板",
+                category: "人设",
+                category2: "角色",
+                desc: "从零开始设计新角色，基于文字描述生成专业角色参考表",
+                label: "英文提示词 (Prompt)",
+                content: "Create a professional character reference sheet of [a futuristic tech explorer, female, wearing a matte white carbon fiber exosuit, short neon blue bob haircut, glowing orange tactical goggles]. Use a clean, neutral plain background and present the sheet as a technical model turnaround in a photographic style. Arrange the composition into two horizontal rows. Top row: four full-body standing views: front view, left profile view, right profile view, back view. Bottom row: three highly detailed close-up portraits: front portrait, left profile portrait, right profile portrait. Maintain perfect identity consistency, accurate anatomy, and consistent facial scale. Lighting should be natural and controlled. Output a crisp, print-ready reference sheet."
+            },
+            {
+                id: 3,
+                title: "智能换装模板",
+                category: "换装",
+                category2: "迭代",
+                desc: "保持角色特征不变，仅更换服装造型，适用于角色多造型展示",
+                label: "英文提示词 (Prompt)",
+                content: "Keep the same character sheet layout. Keep the physical characteristics, facial features, and expression exactly the same as the previous reference. Change the outfit to [a traditional crimson Hanfu with intricate gold phoenix embroidery and flowing silk sleeves]. Ensure the new clothing maintains the same technical turnaround perspective and lighting consistency across all panels."
+            }
+        ];
+
+        let currentCategory = 'all';
+        let searchQuery = '';
+
+        // 渲染提示词卡片
+        function renderPrompts() {
+            const grid = document.getElementById('promptsGrid');
+            const filtered = prompts.filter(p => {
+                const matchCategory = currentCategory === 'all' || 
+                    p.category === currentCategory || p.category2 === currentCategory;
+                const matchSearch = searchQuery === '' || 
+                    p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    p.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    p.content.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCategory && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <span>🔍</span>
+                        <p>没有找到匹配的提示词</p>
+                    </div>
+                `;
+            } else {
+                grid.innerHTML = filtered.map(p => `
+                    <div class="prompt-card" data-category="${p.category}">
+                        <div class="prompt-header">
+                            <h3 class="prompt-title">${p.title}</h3>
+                            <span class="prompt-tag">${p.category}</span>
+                        </div>
+                        <div class="prompt-body">
+                            <p class="prompt-desc">${p.desc}</p>
+                            <p class="prompt-label">${p.label}</p>
+                            <div class="prompt-content">${p.content}</div>
+                        </div>
+                        <div class="prompt-actions">
+                            <button class="copy-btn" onclick="copyPrompt(${p.id}, this)">
+                                📋 一键复制
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // 更新统计
+            document.getElementById('stats').textContent = 
+                `共 ${filtered.length} 条提示词`;
+        }
+
+        // 复制功能
+        function copyPrompt(id, btn) {
+            const prompt = prompts.find(p => p.id === id);
+            if (prompt) {
+                navigator.clipboard.writeText(prompt.content).then(() => {
+                    btn.innerHTML = '✅ 已复制！';
+                    btn.classList.add('copied');
+                    
+                    // 显示 toast
+                    const toast = document.getElementById('toast');
+                    toast.classList.add('show');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = '📋 一键复制';
+                        btn.classList.remove('copied');
+                        toast.classList.remove('show');
+                    }, 2000);
+                });
+            }
+        }
+
+        // 分类筛选
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.category;
+                renderPrompts();
+            });
+        });
+
+        // 搜索功能
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderPrompts();
+        });
+
+        // 初始渲染
+        renderPrompts();
+    </script>
+</body>
+</html>
